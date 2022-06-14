@@ -1,5 +1,11 @@
+//Require inquirer and fs
 const inquirer = require('inquirer')
 const fs = require('fs')
+
+//Require Manager, Intern, and Engineer classes
+const Engineer = require('./lib/Engineer')
+const Intern = require('./lib/Intern')
+const Manager = require('./lib/Manager')
 
 
 //TODO: create a CLI that can accept user input, which will take user the user input and display as a HTML file.
@@ -16,56 +22,164 @@ const fs = require('fs')
 const generateHTML = ({ name, id, email, office }) =>
 
   //Starting back tick
-`
+  `
 
 
 `
 // Ending backtick ^
 
+
+const managers = []
+const interns = []
+const engineers = []
+
 //TODO: Create the questions list
 
-const questions = () => {
+const newQuestion = () => {
+  return inquirer.prompt({
+    type: "list",
+    name: 'role',
+    message: "New Employee's role?",
+    chices: ['Manager, Engineer, Intern']
+  })
+    .then((data) => {
+      const answer = data
+      if (answer.role === 'Manager') {
+        managerQuestions()
+      } else if (answer.role === 'Engineer') {
+        engineerQuestions()
+      } else if (answer.role === 'Intern') {
+        internQuestions()
+      } else {
+        console.log(managers, interns, engineers)
+      }
+    })
+}
+
+const managerQuestions = () => {
   return inquirer.prompt([
 
     {
       type: 'input',
       name: 'name',
-      message: 'Manager name:',
+      message: 'What is the Managers name:',
     },
 
     {
       type: 'input',
+      name: 'id',
+      message: 'Id Number',
+    },
+    {
+      type: 'input',
       name: 'email',
-      message: 'Email address',
+      message: 'Manager Email',
+    },
+    {
+      type: 'input',
+      name: "officeNumber",
+      message: 'Office Number',
+    },
+    {
+      type: 'confirm',
+      name: 'newMember',
+      message: 'Would you like to add an additional member to this team?',
+    },
+  ])
+    .then((data) => {
+      const newManager = new Manager(
+        data.name
+      data.id
+      data.email
+      data.officeNumber
+      )
+      managers.push(newManager)
+      newQuestion()
+    })
+}
+
+
+const engineerQuestions = () => {
+  return inquirer.prompt([
+
+    {
+      type: 'input',
+      name: 'name',
+      message: 'What is the Enigneers name?',
+    },
+
+    {
+      type: 'input',
+      name: 'id',
+      message: 'What is the Engineers ID?',
+    },
+    {
+      type: 'input',
+      name: 'email',
+      message: 'What is the Engineers email?',
+    },
+
+    {
+      type: 'input',
+      name: 'github',
+      message: 'What is the Engineers Github username? (Case Sensitive)',
+    },
+  ])
+    .then((data) => {
+      const newEngineer = new Engineer(
+        data.name
+      data.id
+      data.email
+      data.github
+      )
+      engineers.push(newEngineer)
+      newQuestion()
+    })
+}
+
+internQuestions = () => {
+  return inquirer.prompt([
+
+    {
+      type: 'input',
+      name: 'name',
+      message: 'What is the interns name?'
     },
     {
       type: 'input',
       name: 'id',
-      message: 'Employee ID',
+      message: 'What is the interns ID?'
     },
     {
       type: 'input',
-      name: "office",
-      message: 'Office Number',
+      name: 'email',
+      message: 'What is the interns email?',
     },
     {
-      type: 'checkbox',
-      name: 'engineer',
-      message: 'Would you like to add an engineer to this team?',
-      choices: ['Yes', 'No'],
-    },
-    {
-      type: 'checkbox',
-      name: 'intern',
-      message: 'Would you like to add an engineer to this team?',
-      choices: ['Yes', 'No'],
+      type: 'input',
+      name: 'school',
+      message: 'What school is the intern from?'
     }
-
   ])
-    .then(data => {
-      let answers = data
-      console.log(data)
+    .then((data) => {
+      const newIntern = new Intern(
+        data.name
+      data.id
+      data.email
+      data.school
+      )
+      interns.push(newIntern)
+      newQuestion()
     })
 }
+
+
+
+
+
+
+
+
+
 
 questions()
