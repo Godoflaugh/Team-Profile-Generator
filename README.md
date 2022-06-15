@@ -2,6 +2,9 @@
 
   ## Description
   A team profile generator from the command line.
+  
+  ![team](https://user-images.githubusercontent.com/3208213/173704005-d2a870d4-9f01-4cb2-8e55-2fa25dc4a643.PNG)
+
 
   ## License Badge
   
